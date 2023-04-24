@@ -1,0 +1,56 @@
+.track {
+    border-bottom: 2px solid #000;
+    width: 95%;
+    margin: auto;
+    font-family: 'Lobster', cursive, 'Trebuchet MS';
+}
+
+.track:first-child {
+    border-top: 2px solid #000;
+}
+
+.styling-cont {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    transition: background-color .5s ease-out;
+    position: relative;
+}
+
+.styling-cont:hover {
+    background-color: var(--hot-magenta-opaque);
+}
+
+.styling-cont h3 {
+    display: block;
+    max-width: 80%;
+    margin: auto;
+}
+
+.styling-cont p {
+    max-width: 80%;
+    margin: auto;
+}
+
+.span-divider {
+    font-weight: bold;
+    color: var(--hot-magenta)
+}
+
+.add-remove-btn {
+    background-color: var(--indigo-opaque);
+    color: var(--text-white);
+    font-size: 1.15rem;
+    width: 30px;
+    height: 100%;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    left: 90%;
+    top: 0;
+}
+
+.add-remove-btn:hover {
+    background-color: var(--hot-magenta);
+}

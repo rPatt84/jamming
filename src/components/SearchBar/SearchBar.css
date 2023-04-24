@@ -1,0 +1,62 @@
+#search-form, #search-song, #submit{ 
+    border-radius: 25px;
+    border: none;
+}
+
+#search-container {
+    width: 350px;
+    height: 125px;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--indigo-opaque);
+    border: #000 solid 2px;
+    position: relative;
+}
+
+#invalid {
+    display: none;
+    position: absolute;
+    border-radius: 5px 5px 0 0;
+    top: -17px;
+    padding: 5px;
+    width: 77%;
+    background-color: red;
+    color: white;
+    z-index: 2;
+}
+
+#search-song {
+    height: 50px;
+    width: 90%;
+    margin: .5rem;
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+#search-song:hover {
+    background-color: var(--dark-violet);
+    color: var(--text-white);
+}
+
+#submit {
+    margin: .5rem;
+    width: 50%;
+    height: 35px;
+    background-color: var(--hot-magenta);
+    color: var(--text-white);
+    font-size: 1.25rem;
+    font-family: 'Josefin Sans', sans-serif, arial;
+}
+
+#submit:hover {
+    background-color: var(--dark-violet)
+}
+
+#search-song, #submit{
+    transition: background-color .25s linear;
+    cursor: pointer;
+}
