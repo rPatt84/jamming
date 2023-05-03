@@ -1,6 +1,6 @@
 .track {
     border-bottom: 2px solid #000;
-    width: 95%;
+    width: 100%;
     margin: auto;
     font-family: 'Lobster', cursive, 'Trebuchet MS';
 }
@@ -49,6 +49,10 @@
     position: absolute;
     left: 90%;
     top: 0;
+}
+
+.hidden {
+    display: none;
 }
 
 .add-remove-btn:hover {

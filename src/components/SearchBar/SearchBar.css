@@ -4,8 +4,8 @@
 }
 
 #search-container {
-    width: 350px;
-    height: 125px;
+    width: 400px;
+    height: 175px;
     margin: 2rem auto;
     display: flex;
     flex-direction: column;

@@ -33,48 +33,78 @@ const Spotify = {
         }
     },
 
-    // search spotify and fetch and format results
-    search(searchTerm){
-        const accessToken = this.getAccessToken();
-        return fetch(`https://api.spotify.com/v1/search?type=track&q=${searchTerm}`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
+    fetchFunction(url, token){
+        return fetch(url, {
+             headers: {
+                Authorization: `Bearer ${token}`
             }
         })
         .then(response => {
-            if(response.ok){ return response.json() }
+            if(!response.ok){ throw new Error('Error: ' + response.status)}
+            return response.json()
         })
-        .then(JSONResponse => {
-            if(!JSONResponse.tracks){ return false }
-            return JSONResponse.tracks.items.map(track => ({
-                id: track.id,
-                name: track.name,
-                artist: track.artists[0].name,
-                album: track.album.name,
-                uri: track.uri
-            }))
+        .catch(error => {
+            console.error('Error: ' + error.message)
         })
-        .catch(error => new Error(error))
+    },
+
+    // search spotify and fetch and format results
+    async search(searchType, searchTerm){
+        const accessToken = this.getAccessToken();
+        return await  this.fetchFunction(`https://api.spotify.com/v1/search?q=${searchTerm}&type=${searchType}`, accessToken)
+            .then(async JSONResponse => {
+                let data;
+                
+                // NEED TO ADD ARTIST SEARCH TO IF STATEMENTS
+                if (searchType === 'artist'){
+                    data = await this.fetchFunction(`https://api.spotify.com/v1/artists/${JSONResponse.artists.items[0].id}/albums?include_groups=album&limit=50`, accessToken);
+                    return data.items.map(album => {
+                        return ({
+                            id: album.id,
+                            name: album.name ,
+                            album: album.album_type,
+                            artist: album.artists[0].name,
+                            uri: album.uri
+                        })
+                    })
+                   
+                //    ?include_groups=album
+                } else if(searchType === 'album') { 
+                    data = await this.fetchFunction(`https://api.spotify.com/v1/albums/${JSONResponse.albums.items[0].id}`, accessToken);
+                    return data.tracks.items.map(track => ({ 
+                        id: track.id,
+                        name: track.name,
+                        artist: track.artists[0].name,
+                        album: data.name,
+                        uri: track.uri
+                    }))
+                } else if(searchType === 'track'){
+                    return JSONResponse.tracks.items.map(track => ({ 
+                        id: track.id,
+                        name: track.name,
+                        artist: track.artists[0].name,
+                        album: track.album.name,
+                        uri: track.uri
+                    }))
+                }
+    
+                return this.formatTracks(data);
+            })
+            .catch(error => new Error(error))
     },
 
     // Fetch user id, save playlist to user accont, then add tracks to the saved playlist
     savePlaylist(playlisURIs, playlistName){
-        const headers = { 'Authorization': `Bearer ${accessToken}`}
-
-        // Fetch User ID and get url conatining user id
-        const userID = fetch('https://api.spotify.com/v1/me', {
-            headers: headers
-        })
-        .then(response => {
-            if(response.ok){ return response.json() }
-            throw new Error('Error: ' + response.status);
-        })
+        accessToken = this.getAccessToken();
+        const urserID = this.fetchFunction('https://api.spotify.com/v1/me', accessToken)
         .then(jsonResponse => jsonResponse.href)
         .then(urlWithUserID => {
             //Create new playlist playlistName argument
             return fetch(`${urlWithUserID}/playlists/`, {
                 method: 'POST',
-                headers: headers,
+                headers: {
+                    authorization: `Bearer ${accessToken}`
+                },
                 body: JSON.stringify({name: playlistName})
             })
             .then(response => {
@@ -85,7 +115,9 @@ const Spotify = {
                 // Add tracks to the saved playlist
                 return fetch(`${urlWithUserID}/playlists/${jsonResponse.id}/tracks`, {
                     method: 'POST',
-                    headers: headers,
+                    headers: {
+                        authorization: `Bearer ${accessToken}`
+                    },
                     body: JSON.stringify({uris: playlisURIs})
                 })
             })

@@ -1,0 +1,36 @@
+figure {
+    width: 100%;
+}
+
+figcaption {
+    margin: 10px
+}
+
+figure > div {
+    display: inline-block;
+    position: relative;
+    top: 3.5px;
+    width: 85px;
+}
+
+.type-tab {
+    display: none;
+    background-color: var(--hot-magenta);
+}
+
+label {
+    cursor: pointer;
+    padding: 2.5px 20%;
+    border: 2px solid #000;
+    border-bottom: none;;
+    border-radius: 25px 25px 0 0;
+    background-color: var(--hot-magenta);
+}
+
+label:hover {
+    background-color: var(--hot-magenta-opaque)
+}
+
+.type-tab:checked ~ label {
+    background-color: var(--indigo);
+}

@@ -88,8 +88,9 @@ class App extends React.Component {
   }
 
   // Search Spotify & get token if needed
-  searchBtn(searchTerm){
-    Spotify.search(searchTerm)
+  searchBtn(searchType, searchTerm){
+    const formattedSearchTerm = searchTerm.replaceAll(" ", "+");
+    Spotify.search(searchType, formattedSearchTerm)
       .then(results => {
         if(results.length >= 1){
           this.setState({
